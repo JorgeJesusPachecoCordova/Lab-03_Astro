@@ -1,0 +1,40 @@
+---
+import { useEffect, useState } from 'react';
+
+const Blog = () => {
+  const [articles, setArticles] = useState([]);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const response = await fetch('http://localhost:1337/api/articles/');
+        if (!response.ok) {
+          throw new Error('Error getting items');
+        }
+        const data = await response.json();
+        setArticles(data);
+      } catch (error) {
+        console.error('Error getting items:', error);
+      }
+    };
+
+    fetchArticles();
+  }, []);
+
+  return (
+    <div>
+      <h1>Artículos</h1>
+      <ul>
+        {articles.map((article, index) => (
+          <li key={index}>
+            <h2>{article.title}</h2>
+            <p>{article.content}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default Blog;
+---
